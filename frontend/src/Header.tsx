@@ -3,9 +3,15 @@ import { css } from '@emotion/react';
 import { fontFamily, fontSize, gray1, gray2, gray5 } from './Styles';
 import React from 'react';
 import { UserIcon } from './Icons';
-import { Link } from 'react-router-dom';
+
+import { Link, useSearchParams } from 'react-router-dom';
 
 export const Header = () => {
+  const [searchParams] = useSearchParams();
+  const criteria = searchParams.get('criteria') || '';
+
+  const [search, setSearch] = React.useState(criteria);
+
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.currentTarget.value);
   };
@@ -39,6 +45,7 @@ export const Header = () => {
       <input
         type="text"
         placeholder="Search..."
+        value={search}
         onChange={handleSearchInputChange}
         css={css`
           box-sizing: border-box;
