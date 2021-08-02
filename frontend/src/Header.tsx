@@ -1,25 +1,26 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { fontFamily, fontSize, gray1, gray2, gray5 } from './Styles';
 import React from 'react';
-import { UserIcon } from './Icons';
-
 import { useForm } from 'react-hook-form';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { UserIcon } from './Icons';
+import { fontFamily, fontSize, gray1, gray2, gray5 } from './Styles';
 
 type FormData = {
   search: string;
 };
 
 export const Header = () => {
-  const { register } = useForm<FormData>();
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm<FormData>();
   const [searchParams] = useSearchParams();
+
   // Get criteria if true else criteria equals an empty string.
   const criteria = searchParams.get('criteria') || '';
 
-  // On submit form display search input in console.
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  // On submit navigate to search page with specified criteria
+  const submitForm = ({ search }: FormData) => {
+    navigate(`search?criteria=${search}`);
   };
 
   return (
@@ -49,7 +50,7 @@ export const Header = () => {
       >
         Q &amp; A
       </Link>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(submitForm)}>
         <input
           {...register('search')}
           type="text"
