@@ -1,4 +1,5 @@
 import { QuestionData } from './QuestionsData';
+import { Store, createStore, combineReducers } from 'redux';
 
 // Types for state of the store.
 interface QuestionsState {
@@ -120,3 +121,12 @@ const questionsReducer = (
   }
   return state;
 };
+
+const rootReducer = combineReducers<AppState>({
+  questions: questionsReducer,
+});
+
+export function configureStore(): Store<AppState> {
+  const store = createStore(rootReducer, undefined);
+  return store;
+}
